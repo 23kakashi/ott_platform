@@ -1,13 +1,13 @@
 // import * as path from "path";
 import path from "path";
-// import * as dotenv from "dotenv";
-require("dotenv").config();
+import "dotenv/config";
 
 export default {
   development: {
     client: "pg",
-    connection: process.env.CONNECTION_STRING,
-    // "postgres://wlvrnqyn:yf5xexuTkWx6zFIlZa7ivfUbsdOBTu1n@tiny.db.elephantsql.com/wlvrnqyn",
+    connection:
+      "postgres://wlvrnqyn:yf5xexuTkWx6zFIlZa7ivfUbsdOBTu1n@tiny.db.elephantsql.com/wlvrnqyn",
+    //  process.env.CONNECTION_STRING,
     migrations: {
       directory: path.join(__dirname, "config", "migrations"),
     },
