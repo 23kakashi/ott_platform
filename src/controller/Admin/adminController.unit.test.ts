@@ -4,7 +4,7 @@ import * as userquery from "../../database/user.query";
 import * as movie from "../../service/addMovie.service";
 import app from "../../app";
 
-describe("create new movie api POST(/admin/create)", () => {
+describe.skip("create new movie api POST(/admin/create)", () => {
   afterEach(() => {
     sinon.restore();
   });
