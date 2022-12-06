@@ -45,7 +45,6 @@ authController.get(
         .cookie("authott", data[0], {
           httpOnly: true,
           secure: false,
-          maxAge: 360000,
         })
         .status(status)
         .json({

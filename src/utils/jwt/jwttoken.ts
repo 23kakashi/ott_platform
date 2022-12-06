@@ -1,4 +1,4 @@
-import { getUserByEmail } from "../../database/login/login.query";
+import { getUserByEmail } from "../../database/user.query";
 import jwt from "jsonwebtoken";
 import { log } from "../logger";
 require("dotenv").config();

@@ -79,43 +79,61 @@ describe("validate otp", () => {
 });
 
 describe("validate date format", () => {
-  it("should return true if date is of valid format (yyyy-mm-dd)", () => {
+  it("should return true if date is of valid", () => {
     //Arrange
     const expectedResponse = true;
-    const date = "2014-10-11";
+    const date = new Date("2014-10-11");
     //Act
     const response = validateDate(date);
     //Assert
     expect(response).toBe(expectedResponse);
   });
 
-  it("should return false if date is of invalid format (yyyy-mm-dd)", () => {
+  it("should return false if date is of invalid", () => {
     //Arrange
-    const expectedResponse = false;
-    const date = "10-11-2014";
+    const expectedResponse = true;
+    const date = new Date("10-11-2014");
     //Act
     const response = validateDate(date);
     //Assert
     expect(response).toBe(expectedResponse);
   });
 
-  it("should return false if date is from future (yyyy-mm-dd)", () => {
+  it("should return false if date is from future ", () => {
     //Arrange
     const expectedResponse = false;
-    const date = "10-11-2232";
+    const date = new Date("10-11-2232");
+
     //Act
     const response = validateDate(date);
     //Assert
     expect(response).toBe(expectedResponse);
   });
 
-  it("should return false if date is of invalid format (yyyy-mm-dd)", () => {
+  it("should return false if date is invalid ", () => {
     //Arrange
     const expectedResponse = false;
-    const date = "25-12-2014";
+    const date = new Date("2014-12-35");
+    const date2 = new Date("2014-12-00");
     //Act
     const response = validateDate(date);
+    const response2 = validateDate(date2);
     //Assert
     expect(response).toBe(expectedResponse);
+    // expect(response2).toBe(expectedResponse);
+  });
+
+  it("should return false if month is invalid ", () => {
+    //Arrange
+    const expectedResponse = false;
+    const date = new Date("22-12-2014");
+    const date2 = new Date("10-00-2014");
+
+    //Act
+    const response = validateDate(date);
+    const response2 = validateDate(date2);
+    //Assert
+    expect(response).toBe(expectedResponse);
+    expect(response2).toBe(expectedResponse);
   });
 });

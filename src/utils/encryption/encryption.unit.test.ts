@@ -1,5 +1,3 @@
-import { hash } from "argon2";
-import sinon from "sinon";
 import { checkPassword, encryptPassword } from "./encyption";
 
 describe("encryption", () => {

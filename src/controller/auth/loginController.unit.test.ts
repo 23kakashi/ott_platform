@@ -1,7 +1,7 @@
 import request from "supertest";
 import sinon from "sinon";
 import app from "../../app";
-import * as query from "../../database/login/login.query";
+import * as query from "../../database/user.query";
 import * as login from "../../service/userLogin.service";
 import * as otp from "../../utils/otp/otp";
 import * as encryption from "../../utils/encryption/encyption";

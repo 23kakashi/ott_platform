@@ -1,4 +1,4 @@
-import { getUserByEmail } from "../database/login/login.query";
+import { getUserByEmail } from "../database/user.query";
 import { userType } from "../types/user.types";
 import { checkPassword, encryptPassword } from "../utils/encryption/encyption";
 import { log } from "../utils/logger";

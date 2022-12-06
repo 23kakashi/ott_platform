@@ -1,7 +1,7 @@
 import sinon from "sinon";
 import * as nodemailer from "./nodemailer";
 
-describe.only("mailer", () => {
+describe("mailer", () => {
   afterEach(() => {
     sinon.restore();
   });
