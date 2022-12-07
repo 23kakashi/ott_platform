@@ -1,13 +1,13 @@
-import app from "./app";
-import { log } from "./utils/logger";
-
+import { App } from "./app";
+import { Log } from "./logger/logger";
 //connection
 const PORT = process.env.NODE_ENV === "test" ? 3000 : process.env.PORT;
-
-app.listen(PORT, async () => {
+const server = new App();
+const { log } = new Log();
+server.connection.listen(PORT, async () => {
   try {
-    log.info(`server is istening on Port ${PORT}`);
+    log.info(`Server is running on http://localhost:${PORT}`);
   } catch (error) {
-    log.error("connection to server failed", error);
+    log.error("Internal Server Error Occured");
   }
 });

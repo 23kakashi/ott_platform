@@ -1,11 +1,10 @@
-import { Knex } from "knex";
 import knex from "../config/db";
+import { userType } from "../types/user.types";
 
-const SELET_USER_QUERY = 'SELECT * FROM USERS WHERE EMAIL';
 export class UserRepository {
   constructor() {}
 
-  public getUserByEmail(email: string): Knex.QueryBuilder {
+  public getUserByEmail(email: string): Promise<userType | undefined> {
     return knex("users").select("*").where("email", email).first();
   }
 }
