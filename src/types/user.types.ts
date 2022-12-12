@@ -1,4 +1,4 @@
-export interface userType {
+export interface UserType {
   userid: string;
   email: string;
   plan: string;

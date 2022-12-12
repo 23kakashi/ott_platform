@@ -1,13 +1,17 @@
-import Logger from "bunyan";
 import bunyan from "bunyan";
 import { v4 as uuid } from "uuid";
 
-export class Log {
-  public log: Logger;
+// logger for each API
+
+class Logger {
+  public log;
+
   constructor() {
-    this.log = bunyan.createLogger({
-      name: "ott_server_connect",
-      reqid: uuid(),
+    this.log = new bunyan({
+      name: "job-portal",
+      "request-id": uuid(),
     });
   }
 }
+
+export default Logger;
