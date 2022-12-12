@@ -25,8 +25,27 @@ class UserController {
     }
   }
 
+  private async getMovie(request: Request, response: Response) {
+    try {
+      const { search } = request.query;
+      const movie = await UserServiceObj.getMovie(String(search));
+      response.status(OK_STATUS_CODE).json({
+        message: "success",
+        movie,
+      });
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof ErrorHandler) {
+        return response.status(error.erroCode).json(error);
+      }
+      return response.status(INTERNAL_SERVER_ERROR_STATUS_CODE).json({ message: INTERNAL_SERVER_ERROR_MESSAGE });
+    }
+  }
+
   routes() {
     this.userRouter.patch("/changeplan", requireLogin, this.changePlan);
+    this.userRouter.get("/changeplan", requireLogin, this.getMovie);
   }
 }
 

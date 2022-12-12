@@ -4,7 +4,7 @@ import { MovieCastType, MovieDataType } from "../types/movie.types";
 
 class MovieService {
   constructor() {}
-  async addMovieToDb({ title, rating, language, release_date, plan, url, actors, directos, geners }: MovieDataType) {
+  async addMovieToDb({ title, rating, language, release_date, plan, url, actors, directors, geners }: MovieDataType) {
     const movie_id: string = await MovieRepositoryObj.storeMovie({ title, rating, language, release_date, plan, url });
 
     const moviecast = actors.map((actor: string) => {
@@ -13,14 +13,14 @@ class MovieService {
 
     await MovieRepositoryObj.storeMovieCast(moviecast);
 
-    const moviedirectors = directos.map((director: string) => {
+    const moviedirectors = directors.map((director: string) => {
       return { movie_id, director_name: director };
     });
     await MovieRepositoryObj.storeMovieDirectors(moviedirectors);
-
-    const moviegeners = directos.map((genres: string) => {
+    const moviegeners = geners.map((genres: string) => {
       return { movie_id, genres };
     });
+
     await MovieRepositoryObj.storeMovieGeners(moviegeners);
   }
 }

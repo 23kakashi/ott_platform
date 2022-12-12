@@ -1,6 +1,4 @@
 import knex from "../config/db";
-import { INTERNAL_SERVER_ERROR_MESSAGE } from "../Error/customErrorMessage";
-import ErrorHandler from "../Error/ErrorHandler";
 import { MovieCastType, MovieDirectorType, MovieGenerType, MovieType } from "../types/movie.types";
 class MovieRepository {
   constructor() {}
@@ -20,6 +18,20 @@ class MovieRepository {
 
   async storeMovieGeners(moviegeners: MovieGenerType[]) {
     return await knex("movie_geners").insert(moviegeners);
+  }
+
+  async getMovieByMovieId(id: string) {
+    return await knex("movies").where("movies_id", id);
+  }
+
+  async getMovieCast(id: string) {
+    return await knex("movie_cast").select("actor").where("movie_id", id);
+  }
+  async getMovieDirection(id: string) {
+    return await knex("movie_direction").select("director_name").where("movie_id", id);
+  }
+  async getMovieGeners(id: string) {
+    return await knex("movie_geners").select("genres").where("movie_id", id);
   }
 }
 
