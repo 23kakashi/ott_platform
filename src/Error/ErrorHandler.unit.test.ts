@@ -59,4 +59,24 @@ describe("Error handler", () => {
     expect(response.errorMessage).toBe("invalid otp");
     expect(response.erroCode).toBe(404);
   });
+
+  it("should return 404 if otp expire error is thrown", () => {
+    //Arrange
+    const receivedMessage = "plan already active";
+    //Act
+    const response = new ErrorHandlerObj(receivedMessage);
+    //Assert
+    expect(response.errorMessage).toBe("plan already active");
+    expect(response.erroCode).toBe(404);
+  });
+
+  it("should return 404 if otp expire error is thrown", () => {
+    //Arrange
+    const receivedMessage = "invalid plan";
+    //Act
+    const response = new ErrorHandlerObj(receivedMessage);
+    //Assert
+    expect(response.errorMessage).toBe("invalid plan");
+    expect(response.erroCode).toBe(401);
+  });
 });

@@ -5,6 +5,7 @@ import { INTERNAL_SERVER_ERROR_STATUS_CODE, OK_STATUS_CODE } from "../../utils/h
 import requireLogin from "../../middleware/loginMiddleware";
 import checkAccessLevel from "../../middleware/accessLevelMiddleware";
 import MovieServiceObj from "../../service/MovieService";
+import UserServiceObj from "../../service/UserService";
 class UserController {
   public userRouter: Router;
   constructor() {
@@ -14,7 +15,7 @@ class UserController {
 
   private async changePlan(request: Request, response: Response) {
     try {
-      console.log(request.user);
+      await UserServiceObj.changeUserplan(request.user?.userid || "", request.body.plan);
       response.status(OK_STATUS_CODE).json("plan updated");
     } catch (error) {
       if (error instanceof ErrorHandler) {

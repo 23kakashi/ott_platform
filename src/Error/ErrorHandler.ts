@@ -5,6 +5,8 @@ import {
   OTP_EXPIRED_MESSAGE,
   INVALID_OTP_MESSAGE,
   UNAUTHORIZED_ACCESS_MESSAGE,
+  PLAN_ALREADY_ACTIVE,
+  INVALID_PLAN_MESSAGE,
 } from "./customErrorMessage";
 import {
   INTERNAL_SERVER_ERROR_STATUS_CODE,
@@ -43,6 +45,14 @@ class ErrorHandler extends Error {
       case INVALID_OTP_MESSAGE:
         this.erroCode = NOT_FOUND_STATUS_CODE;
         this.errorMessage = INVALID_OTP_MESSAGE;
+        break;
+      case PLAN_ALREADY_ACTIVE:
+        this.erroCode = NOT_FOUND_STATUS_CODE;
+        this.errorMessage = PLAN_ALREADY_ACTIVE;
+        break;
+      case INVALID_PLAN_MESSAGE:
+        this.erroCode = NOT_FOUND_STATUS_CODE;
+        this.errorMessage = INVALID_PLAN_MESSAGE;
         break;
       default:
         this.erroCode = INTERNAL_SERVER_ERROR_STATUS_CODE;

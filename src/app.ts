@@ -39,8 +39,8 @@ export class App {
 
   private routes(): void {
     this.connection.use("/auth", AuthControllerObj.authRouter);
-    this.connection.use("/admin", AdminControllerObj.adminRouter);
     this.connection.use("/user", UserControllerObj.userRouter);
+    this.connection.use("/admin", AdminControllerObj.adminRouter);
   }
 
   private init() {
