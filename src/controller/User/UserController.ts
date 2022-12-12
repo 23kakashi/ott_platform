@@ -43,7 +43,26 @@ class UserController {
     }
   }
 
+  private async watchMovie(request: Request, response: Response) {
+    try {
+      const user = request.user;
+      const { movieid } = request.params;
+      const data = await UserServiceObj.watchMovie(movieid, user?.userid || "");
+      response.status(OK_STATUS_CODE).json({
+        message: "success",
+      });
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof ErrorHandler) {
+        return response.status(error.erroCode).json(error);
+      }
+      return response.status(INTERNAL_SERVER_ERROR_STATUS_CODE).json({ message: INTERNAL_SERVER_ERROR_MESSAGE });
+    }
+  }
+
   routes() {
+    this.userRouter.get("/watch/:movieid", requireLogin, this.watchMovie);
     this.userRouter.patch("/changeplan", requireLogin, this.changePlan);
     this.userRouter.get("/changeplan", requireLogin, this.getMovie);
   }

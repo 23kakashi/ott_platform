@@ -54,6 +54,21 @@ class UserService {
     }
     return movies;
   }
+
+  public async watchMovie(movieId: string, email: string) {
+    const user = await UserRepositoryObj.getUserByEmail(email);
+    const movie = await MovieRepositoryObj.getMovieByMovieId(movieId);
+    if (movie.length < 1) {
+      throw new ErrorHandler(INVALID_PLAN_MESSAGE);
+    }
+    if (user?.plan === "basic" && movie[0].plan === "basic") {
+      return movie[0].url;
+    }
+    if (user?.plan === "basic" && movie[0].plan === "premium") {
+      return "upgrade to premium";
+    }
+    return movie[0].plan;
+  }
 }
 
 const UserServiceObj = new UserService();
