@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import APILogger from "../../logger/logger";
 import ErrorHandler from "../../Error/ErrorHandler";
 import { INVALID_PLAN_MESSAGE } from "../../Error/customErrorMessage";
+import ValidationsObj from "../../utils/validations";
 
 describe("add movie POST (admin/addMovie", () => {
   const logger = new APILogger();
@@ -18,7 +19,7 @@ describe("add movie POST (admin/addMovie", () => {
     language: "English",
     plan: "basic",
     url: "https://via.placeholder.com/150",
-    actors: ["prabhas3", "tammanna3", "anushka3"],
+    cast: ["prabhas3", "tammanna3", "anushka3"],
     directors: ["rajamol3", "kattappa3"],
     geners: ["action3", "adventure3", "drama3"],
   };

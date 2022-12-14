@@ -10,7 +10,7 @@ describe("add movie to db", () => {
     language: "English",
     plan: "basic",
     url: "https://via.placeholder.com/150",
-    actors: ["prabhas3", "tammanna3", "anushka3"],
+    cast: ["prabhas3", "tammanna3", "anushka3"],
     directors: ["rajamol3", "kattappa3"],
     geners: ["action3", "adventure3", "drama3"],
   };
