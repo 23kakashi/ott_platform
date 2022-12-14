@@ -1,11 +1,7 @@
 import knex from "../config/db";
-import { INVALID_USER_MESSAGE } from "../Error/customErrorMessage";
-import ErrorHandlerObj from "../Error/ErrorHandler";
 import { UserType } from "../types/user.types";
 
 class UserRepository {
-  constructor() {}
-
   public async getUserByEmail(email: string): Promise<UserType | undefined> {
     return await knex("users").select("*").where("email", email).first();
   }
@@ -26,7 +22,8 @@ class UserRepository {
       .orWhereILike("actor", `%${search}%`)
       .orWhereILike("director_name", `%${search}%`)
       .orWhereILike("genres", `%${search}%`)
-      .distinct();
+      .distinct()
+      .limit(10);
     return movie;
   }
 }

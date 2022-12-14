@@ -1,10 +1,9 @@
 import nodemailer from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 class EmailService {
-  constructor() {}
-
-  public async sendEmail(email: string, otp: string): Promise<void> {
-    let transporter = nodemailer.createTransport({
+  public async sendEmail(email: string, otp: string): Promise<string> {
+    const transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo> = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
       port: 587,
@@ -28,7 +27,7 @@ class EmailService {
     };
 
     await transporter.sendMail(message);
-    return Promise.resolve();
+    return Promise.resolve("email sent");
   }
 }
 

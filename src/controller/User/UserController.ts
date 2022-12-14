@@ -2,10 +2,9 @@ import { Request, Response, Router } from "express";
 import { INTERNAL_SERVER_ERROR_MESSAGE } from "../../Error/customErrorMessage";
 import ErrorHandler from "../../Error/ErrorHandler";
 import { INTERNAL_SERVER_ERROR_STATUS_CODE, OK_STATUS_CODE } from "../../utils/httpStatusCode";
-import requireLogin from "../../middleware/loginMiddleware";
-import checkAccessLevel from "../../middleware/accessLevelMiddleware";
-import MovieServiceObj from "../../service/MovieService";
+import { requireLogin } from "../../middleware/loginMiddleware";
 import UserServiceObj from "../../service/UserService";
+import APILogger from "../../logger/logger";
 class UserController {
   public userRouter: Router;
   constructor() {
@@ -14,10 +13,13 @@ class UserController {
   }
 
   private async changePlan(request: Request, response: Response) {
+    const logger = new APILogger();
     try {
-      await UserServiceObj.changeUserplan(request.user?.userid || "", request.body.plan);
+      if (request.user?.userid !== undefined)
+        await UserServiceObj.changeUserplan(request.user.userid, request.body.plan, logger);
       response.status(OK_STATUS_CODE).json("plan updated");
     } catch (error) {
+      logger.error(String(error));
       if (error instanceof ErrorHandler) {
         return response.status(error.erroCode).json(error);
       }
@@ -26,16 +28,16 @@ class UserController {
   }
 
   private async getMovie(request: Request, response: Response) {
+    const logger = new APILogger();
     try {
       const { search } = request.query;
-      const movie = await UserServiceObj.getMovie(String(search));
+      const movie = await UserServiceObj.getMovie(String(search), logger);
       response.status(OK_STATUS_CODE).json({
         message: "success",
         movie,
       });
     } catch (error) {
-      console.log(error);
-
+      logger.error(String(error));
       if (error instanceof ErrorHandler) {
         return response.status(error.erroCode).json(error);
       }
@@ -44,16 +46,17 @@ class UserController {
   }
 
   private async watchMovie(request: Request, response: Response) {
+    const logger = new APILogger();
     try {
       const user = request.user;
       const { movieid } = request.params;
-      const data = await UserServiceObj.watchMovie(movieid, user?.userid || "");
+      const data = await UserServiceObj.watchMovie(movieid, user?.userid || "", logger);
       response.status(OK_STATUS_CODE).json({
         message: "success",
+        movie_url: data,
       });
     } catch (error) {
-      console.log(error);
-
+      logger.error(String(error));
       if (error instanceof ErrorHandler) {
         return response.status(error.erroCode).json(error);
       }
@@ -64,7 +67,7 @@ class UserController {
   routes() {
     this.userRouter.get("/watch/:movieid", requireLogin, this.watchMovie);
     this.userRouter.patch("/changeplan", requireLogin, this.changePlan);
-    this.userRouter.get("/changeplan", requireLogin, this.getMovie);
+    this.userRouter.get("/", this.getMovie);
   }
 }
 

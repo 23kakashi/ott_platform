@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { UNAUTHORIZED_ACCESS_MESSAGE } from "../Error/customErrorMessage";
@@ -12,11 +13,12 @@ declare global {
   }
 }
 
-const requireLogin = (request: Request, response: Response, next: NextFunction) => {
+export const requireLogin = (request: Request, response: Response, next: NextFunction) => {
   const cookie = request.headers?.cookie || "";
   const receivedToken = cookie.split(";")[0].split("=")[1];
   try {
-    jwt.verify(receivedToken, "eiuof978weruyiuwef79438rferi23", (err: any, decoded: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jwt.verify(receivedToken, "eiuof978weruyiuwef79438rferi23", (err, decoded: any) => {
       if (err) {
         throw new ErrorHandler(UNAUTHORIZED_ACCESS_MESSAGE);
       }
@@ -25,9 +27,7 @@ const requireLogin = (request: Request, response: Response, next: NextFunction) 
     });
   } catch (error) {
     if (error instanceof ErrorHandler) {
-      response.status(error.erroCode).json({ error: true, message: error.errorMessage });
+      response.status(error.erroCode).json({ message: error.errorMessage });
     }
   }
 };
-
-export default requireLogin;

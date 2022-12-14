@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 
 class JwtToken {
-  constructor() {}
-
   public signJwtToken(role: string, userid: string) {
     return jwt.sign({ role: role, userid: userid }, "eiuof978weruyiuwef79438rferi23", { expiresIn: "1d" });
   }

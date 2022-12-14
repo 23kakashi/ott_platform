@@ -1,0 +1,311 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample Goodreads Library server where you can browse through your favourite books and rent them. This is an OMOS(Online Managed Offline Service).",
+    "version": "1.0.6",
+    "title": "Swagger Goodreads"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Login",
+      "description": "User and admin login"
+    },
+    { "name": "Admin", "description": "Admin access" },
+    {
+      "name": "User",
+      "description": "User access"
+    },
+    {
+      "name": "Public",
+      "description": "Available for all"
+    }
+  ],
+  "schemes": ["http"],
+  "paths": {
+    "/auth/login/otp": {
+      "post": {
+        "tags": ["Login"],
+        "summary": "Send otp to registered user",
+        "operationId": "loginotp",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "email",
+            "description": "provide email",
+            "required": true,
+            "schema": { "$ref": "#/definitions/LoginOtp" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "otp sent",
+            "schema": { "$ref": "#/definitions/LoginOtpRes" }
+          },
+          "401": {
+            "description": "verification for email or user failed"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/login/verify": {
+      "post": {
+        "tags": ["Login"],
+        "summary": "Verify otp to login user or admin",
+        "operationId": "loginverify",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "email",
+            "description": "provide email",
+            "required": true,
+            "schema": { "$ref": "#/definitions/LoginVerify" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "otp sent",
+            "schema": { "$ref": "#/definitions/LoginVerifyRes" }
+          },
+          "401": {
+            "description": "invalid email"
+          },
+          "404": {
+            "description": "otp exipred or invalid"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/admin/addMovie": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Admin access to add movie",
+        "operationId": "addMovie",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "movie",
+            "description": "provide movie details",
+            "required": true,
+            "schema": { "$ref": "#/definitions/AddMovieReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "movie added",
+            "schema": { "$ref": "#/definitions/AddMovieRes" }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "tags": ["Public"],
+        "summary": "Search movie",
+        "operationId": "public",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "description": "Seach for content",
+            "required": true,
+            "schema": { "$ref": "#/definitions/SearchReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": { "$ref": "#/definitions/SearchRes" }
+          },
+          "401": {
+            "description": "upgrade to premium"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/changeplan": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Change user plan from basic to premium and visa-versa",
+        "operationId": "userChangePlan",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "plan",
+            "description": "Change user plan",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ChangePlanReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "plan updated or plan already active"
+          },
+          "404": {
+            "description": "invalid plan"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/watch/{movieid}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Change user plan from basic to premium and visa-versa",
+        "operationId": "userChangePlan",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "movieid",
+            "description": "watch movie",
+            "required": true,
+            "schema": { "$ref": "#/definitions/watchReq" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "movie url"
+          },
+          "404": {
+            "description": "invalid plan"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": { "type": "apiKey", "name": "api_key", "in": "header" },
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://petstore.swagger.io/oauth/authorize",
+      "flow": "implicit",
+      "scopes": {
+        "read:pets": "read your pets",
+        "write:pets": "modify pets in your account"
+      }
+    }
+  },
+  "definitions": {
+    "LoginOtp": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "example": "test@test.com" }
+      }
+    },
+    "LoginOtpRes": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "example": "4354" }
+      }
+    },
+    "LoginVerify": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "example": "test@test.com" },
+        "otp": { "type": "string", "example": "3434" }
+      }
+    },
+    "LoginVerifyRes": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "example": "user logged in" }
+      }
+    },
+    "AddMovieReq": {
+      "type": "object",
+      "required": ["title", "release_date", "rating", "language", "url", "actors", "directors", "geners"],
+      "properties": {
+        "title": { "type": "string", "example": "Bahubali" },
+        "release_date": { "type": "string", "example": "2017-12-23" },
+        "rating": { "type": "integer", "example": 8.4 },
+        "language": { "type": "integer", "example": "Telugu" },
+        "url": { "type": "string", "example": "https://via.placeholder.com/150" },
+        "actors": { "type": "array", "example": ["prabhas3", "tammanna3", "anushka3"] },
+        "directors": { "type": "array", "example": ["rajamol3", "kattappa3"] },
+        "geners": { "type": "array", "example": ["action3", "adventure3", "drama3"] }
+      }
+    },
+    "AddMovieRes": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "example": "user logged in" }
+      }
+    },
+    "SearchReq": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "example": "bahubali" }
+      }
+    },
+    "SearchRes": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "example": "success" },
+        "movie": {
+          "type": "object",
+          "properties": {
+            "movies_id": { "type": "string", "example": "adb52532-6ba2-45af-b7df-0eb732e5930f" },
+            "title": { "type": "string", "example": "Bahubali2" },
+            "release_date": { "type": "date", "example": "2017-12-11T18:30:00.000Z" },
+            "rating": { "type": "integer", "example": 7.2 },
+            "createdAt": { "type": "date", "example": "2017-12-11T18:30:00.000Z" },
+            "plan": { "type": "string", "example": "premium" },
+            "url": { "type": "string", "example": "https://via.placeholder.com/150" },
+            "language": { "type": "string", "example": "Telugu" },
+            "cast": { "type": "array", "example": ["prabhas2", "tammanna2", "anushka2"] },
+            "directors": { "type": "array", "example": ["rajamoli2", "kattappa2"] },
+            "geners": { "type": "array", "example": ["action2", "adventure2", "drama2"] }
+          }
+        }
+      }
+    },
+    "ChangePlanReq": {
+      "type": "object",
+      "properties": {
+        "plan": { "type": "string", "example": "basic" }
+      }
+    },
+    "watchReq": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "example": "user logged in" }
+      }
+    },
+    "ChangePlanRes": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "example": "user logged in" }
+      }
+    }
+  }
+}

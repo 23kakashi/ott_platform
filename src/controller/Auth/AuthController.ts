@@ -5,6 +5,7 @@ import { INTERNAL_SERVER_ERROR_MESSAGE } from "../../Error/customErrorMessage";
 import ErrorHandler from "../../Error/ErrorHandler";
 import UserRepositoryObj from "../../repository/UserRepository";
 import JwtTokenObj from "../../utils/jwt/jwttoken";
+import APILogger from "../../logger/logger";
 
 class AuthController {
   public authRouter: Router;
@@ -14,11 +15,13 @@ class AuthController {
   }
 
   private async otpController(request: Request, response: Response) {
+    const logger = new APILogger();
     try {
       const { email } = request.body;
-      await UserLoginServiceObj.sendOtpToValidUserViaEmail(email);
+      await UserLoginServiceObj.sendOtpToValidUserViaEmail(email, logger);
       return response.status(OK_STATUS_CODE).json({ message: "otp sent" });
     } catch (error) {
+      logger.error(String(error));
       if (error instanceof ErrorHandler) {
         return response.status(error.erroCode).json(error);
       }
@@ -27,9 +30,10 @@ class AuthController {
   }
 
   private async otpVerificaitonController(request: Request, response: Response) {
+    const logger = new APILogger();
     try {
       const { email, otp } = request.body;
-      await UserLoginServiceObj.verifyLoginOtp(email, otp);
+      await UserLoginServiceObj.verifyLoginOtp(email, otp, logger);
       const user = await UserRepositoryObj.getUserByEmail(email);
 
       const token = JwtTokenObj.signJwtToken(user?.role || "", user?.email || "");
@@ -41,6 +45,7 @@ class AuthController {
         .status(OK_STATUS_CODE)
         .json({ message: "user logged in" });
     } catch (error) {
+      logger.error(String(error));
       if (error instanceof ErrorHandler) {
         return response.status(error.erroCode).json(error);
       }

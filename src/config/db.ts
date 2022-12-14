@@ -7,6 +7,6 @@
 import knex from "knex";
 import obj from "../knexfile";
 
-const env = process.env.NODE_ENV || "development";
+const env = process.env.NODE_ENV;
 const configOptions = obj.development;
 export default knex(configOptions);

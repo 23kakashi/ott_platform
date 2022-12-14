@@ -1,9 +1,8 @@
+/* eslint-disable no-useless-catch */
 import Redis from "ioredis";
 import { redisConfig } from "../config/redis.connection";
 
 class GenerateOtp {
-  constructor() {}
-
   public async generateOtp(email: string): Promise<string> {
     const otp: string = (Math.floor(Math.random() * 9000) + 1000).toString();
     await this.storeOtpInDb(email, otp);

@@ -7,10 +7,12 @@ import {
   UNAUTHORIZED_ACCESS_MESSAGE,
   PLAN_ALREADY_ACTIVE,
   INVALID_PLAN_MESSAGE,
+  UPGREADE_TO_PREMIUM,
 } from "./customErrorMessage";
 import {
   INTERNAL_SERVER_ERROR_STATUS_CODE,
   NOT_FOUND_STATUS_CODE,
+  OK_STATUS_CODE,
   UNAUTHORIZED_ACCESS_STATUS_CODE,
 } from "../utils/httpStatusCode";
 
@@ -47,12 +49,16 @@ class ErrorHandler extends Error {
         this.errorMessage = INVALID_OTP_MESSAGE;
         break;
       case PLAN_ALREADY_ACTIVE:
-        this.erroCode = NOT_FOUND_STATUS_CODE;
+        this.erroCode = OK_STATUS_CODE;
         this.errorMessage = PLAN_ALREADY_ACTIVE;
         break;
       case INVALID_PLAN_MESSAGE:
         this.erroCode = NOT_FOUND_STATUS_CODE;
         this.errorMessage = INVALID_PLAN_MESSAGE;
+        break;
+      case UPGREADE_TO_PREMIUM:
+        this.erroCode = UNAUTHORIZED_ACCESS_STATUS_CODE;
+        this.errorMessage = UPGREADE_TO_PREMIUM;
         break;
       default:
         this.erroCode = INTERNAL_SERVER_ERROR_STATUS_CODE;

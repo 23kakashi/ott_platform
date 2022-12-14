@@ -67,7 +67,7 @@ describe("Error handler", () => {
     const response = new ErrorHandlerObj(receivedMessage);
     //Assert
     expect(response.errorMessage).toBe("plan already active");
-    expect(response.erroCode).toBe(404);
+    expect(response.erroCode).toBe(200);
   });
 
   it("should return 404 if otp expire error is thrown", () => {
@@ -77,6 +77,16 @@ describe("Error handler", () => {
     const response = new ErrorHandlerObj(receivedMessage);
     //Assert
     expect(response.errorMessage).toBe("invalid plan");
+    expect(response.erroCode).toBe(404);
+  });
+
+  it("should return 401 if otp expire error is thrown", () => {
+    //Arrange
+    const receivedMessage = "upgrade to premium";
+    //Act
+    const response = new ErrorHandlerObj(receivedMessage);
+    //Assert
+    expect(response.errorMessage).toBe("upgrade to premium");
     expect(response.erroCode).toBe(401);
   });
 });

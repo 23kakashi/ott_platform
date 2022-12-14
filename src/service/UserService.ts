@@ -1,13 +1,12 @@
-import { INVALID_PLAN_MESSAGE, PLAN_ALREADY_ACTIVE } from "../Error/customErrorMessage";
+import { INVALID_PLAN_MESSAGE, PLAN_ALREADY_ACTIVE, UPGREADE_TO_PREMIUM } from "../Error/customErrorMessage";
 import ErrorHandler from "../Error/ErrorHandler";
+import APILogger from "../logger/logger";
 import MovieRepositoryObj from "../repository/MovieRepository";
 import UserRepositoryObj from "../repository/UserRepository";
 import { MovieDataType } from "../types/movie.types";
 import { UserType } from "../types/user.types";
 
 class UserService {
-  constructor() {}
-
   public async validateUserByEmail(email: string): Promise<UserType | undefined> {
     const user = await UserRepositoryObj.getUserByEmail(email);
     if (user === undefined) {
@@ -16,24 +15,27 @@ class UserService {
     return Promise.resolve(user);
   }
 
-  public async changeUserplan(email: string, plan: string) {
+  public async changeUserplan(email: string, plan: string, logger: APILogger) {
     if (plan !== "basic" && plan !== "premium") {
       throw new ErrorHandler(INVALID_PLAN_MESSAGE);
     }
+    logger.info("plan is valid");
     const user = await UserRepositoryObj.getUserByEmail(email);
     if (user !== undefined && user.plan === plan) {
       throw new ErrorHandler(PLAN_ALREADY_ACTIVE);
     }
 
     await UserRepositoryObj.updatePlan(email, plan);
+    logger.info("plan changed");
+    return Promise.resolve("plan changed");
   }
 
-  public async getMovie(searchQuery: string) {
+  public async getMovie(searchQuery: string, logger: APILogger) {
     const movieids = await UserRepositoryObj.getMovieBySearch(searchQuery);
+    logger.info("movie id obtained");
+    const movies: any = [];
 
-    let movies: any = [];
-
-    for (let id of movieids) {
+    for (const id of movieids) {
       const { movies_id } = id;
       const movie = await MovieRepositoryObj.getMovieByMovieId(movies_id);
       const cast = await MovieRepositoryObj.getMovieCast(movies_id);
@@ -50,24 +52,29 @@ class UserService {
         geners: movie_geners,
       };
 
-      await movies.push(moviedata);
+      movies.push(moviedata);
     }
+    logger.info("movies sent");
     return movies;
   }
 
-  public async watchMovie(movieId: string, email: string) {
+  public async watchMovie(movieId: string, email: string, logger: APILogger) {
     const user = await UserRepositoryObj.getUserByEmail(email);
+    logger.info("user obtained");
     const movie = await MovieRepositoryObj.getMovieByMovieId(movieId);
+    logger.info("movie obtained");
     if (movie.length < 1) {
       throw new ErrorHandler(INVALID_PLAN_MESSAGE);
     }
     if (user?.plan === "basic" && movie[0].plan === "basic") {
+      logger.info("url sent for basic plan");
       return movie[0].url;
     }
     if (user?.plan === "basic" && movie[0].plan === "premium") {
-      return "upgrade to premium";
+      throw new ErrorHandler(UPGREADE_TO_PREMIUM);
     }
-    return movie[0].plan;
+    logger.info("url sent to premium user");
+    return movie[0].url;
   }
 }
 

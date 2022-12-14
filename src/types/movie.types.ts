@@ -21,7 +21,7 @@ export interface MovieGenerType {
 }
 
 export interface MovieDataType extends MovieType {
-  actors: [string];
-  directors: [string];
-  geners: [string];
+  actors: string[];
+  directors: string[];
+  geners: string[];
 }

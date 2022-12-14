@@ -1,7 +1,17 @@
 "use strict";
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-    preset: "ts-jest",
-    testEnvironment: "node",
-    modulePathIgnorePatterns: ["build"],
+  preset: "ts-jest",
+  testEnvironment: "node",
+  modulePathIgnorePatterns: ["build"],
+  reporters: [
+    "default",
+    [
+      "./node_modules/jest-html-reporter",
+      {
+        pageTitle: "Test Report",
+      },
+    ],
+  ],
+  testResultsProcessor: "./node_modules/jest-html-reporter",
 };

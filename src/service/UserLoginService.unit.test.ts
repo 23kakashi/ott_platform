@@ -5,6 +5,7 @@ import UserLoginServiceObj from "./UserLoginService";
 import UserServiceObj from "./UserService";
 import ErrorHandler from "../Error/ErrorHandler";
 import EmailServiceObj from "../utils/EmailService";
+import APILogger from "../logger/logger";
 
 describe("send otp to user via email", () => {
   const user: UserType = {
@@ -26,7 +27,7 @@ describe("send otp to user via email", () => {
     const email = "testtest.com";
 
     try {
-      await UserLoginServiceObj.sendOtpToValidUserViaEmail(email);
+      await UserLoginServiceObj.sendOtpToValidUserViaEmail(email, new APILogger());
     } catch (error) {
       //Assert
       if (error instanceof ErrorHandler) {
@@ -43,7 +44,7 @@ describe("send otp to user via email", () => {
     const validateEmailSpy = jest.spyOn(UserServiceObj, "validateUserByEmail").mockResolvedValue(undefined);
     // Act
     try {
-      await UserLoginServiceObj.sendOtpToValidUserViaEmail(email);
+      await UserLoginServiceObj.sendOtpToValidUserViaEmail(email, new APILogger());
     } catch (error: any) {
       //Assert
       expect(error.erroCode).toBe(401);
@@ -61,7 +62,7 @@ describe("send otp to user via email", () => {
     const generateOtpSpy = jest.spyOn(GenerateOtpObj, "generateOtp").mockResolvedValue(otp);
 
     //Act
-    const response = await UserLoginServiceObj.sendOtpToValidUserViaEmail(email);
+    await UserLoginServiceObj.sendOtpToValidUserViaEmail(email, new APILogger());
     //Assert
 
     // expect(response).toBe("success");
@@ -75,9 +76,9 @@ describe("send otp to user via email", () => {
     const otp = "3445";
     sinon.stub(UserServiceObj, "validateUserByEmail").resolves(user);
     sinon.stub(GenerateOtpObj, "generateOtp").resolves(otp);
-    const sendEmailSpy = jest.spyOn(EmailServiceObj, "sendEmail").mockResolvedValue();
+    const sendEmailSpy = jest.spyOn(EmailServiceObj, "sendEmail").mockResolvedValue("email sent");
     //Act
-    const response = await UserLoginServiceObj.sendOtpToValidUserViaEmail(email);
+    const response = await UserLoginServiceObj.sendOtpToValidUserViaEmail(email, new APILogger());
     //Assert
 
     expect(response).toBe("success");
@@ -99,7 +100,7 @@ describe("verify login otp", () => {
     let response;
     //act
     try {
-      response = await UserLoginServiceObj.verifyLoginOtp(email, otp);
+      response = await UserLoginServiceObj.verifyLoginOtp(email, otp, new APILogger());
     } catch (error) {
       //Assert
       if (error instanceof ErrorHandler) {
@@ -116,7 +117,7 @@ describe("verify login otp", () => {
     const otp = "1212";
     const getOtpFromDbSpy = jest.spyOn(GenerateOtpObj, "getOtpFromDb").mockResolvedValue("1212");
     //act
-    await UserLoginServiceObj.verifyLoginOtp(email, otp);
+    await UserLoginServiceObj.verifyLoginOtp(email, otp, new APILogger());
 
     //Assert
     expect(getOtpFromDbSpy).toBeCalledTimes(1);
@@ -130,7 +131,7 @@ describe("verify login otp", () => {
     sinon.stub(GenerateOtpObj, "getOtpFromDb").resolves(null);
     //act
     try {
-      await UserLoginServiceObj.verifyLoginOtp(email, otp);
+      await UserLoginServiceObj.verifyLoginOtp(email, otp, new APILogger());
     } catch (error) {
       //Assert
       if (error instanceof ErrorHandler) {
@@ -147,7 +148,7 @@ describe("verify login otp", () => {
     sinon.stub(GenerateOtpObj, "getOtpFromDb").resolves("2232");
     //act
     try {
-      await UserLoginServiceObj.verifyLoginOtp(email, otp);
+      await UserLoginServiceObj.verifyLoginOtp(email, otp, new APILogger());
     } catch (error) {
       //Assert
       if (error instanceof ErrorHandler) {
