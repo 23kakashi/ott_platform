@@ -196,7 +196,6 @@ describe("User service", () => {
       try {
         await UserServiceObj.watchMovie(movieId, email, new APILogger());
       } catch (error) {
-        console.log(error);
         if (error instanceof ErrorHandler) {
           expect(error.erroCode).toBe(401);
           expect(error.errorMessage).toBe("upgrade to premium");

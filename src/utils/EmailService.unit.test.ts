@@ -4,7 +4,7 @@ import EmailServiceObj from "./EmailService";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { table } from "console";
 
-describe.skip("Email service", () => {
+describe("Email service", () => {
   const message = {
     from: `"OTT platform" test@test.com`,
     to: "test@test.com",
@@ -13,18 +13,11 @@ describe.skip("Email service", () => {
     html: `OTP for ott platform is <b>1221</b>
           `,
   };
-  it("", () => {
-    //Arrange
-    //Act
-    //Assert
+
+  it("", async () => {
+    const transporterMock = sinon.stub(nodemailer, "createTransport");
+    // sinon.stub(transporterMock, "sendMail").resolves();
+    const response = await EmailServiceObj.sendEmail("test@test.com", "1212");
+    console.log(response);
   });
-  //   it("", async () => {
-  //     const transporterMock: nodemailer.Transporter<SMTPTransport.SentMessageInfo> = sinon.stub(
-  //       nodemailer,
-  //       "createTransport"
-  //     );
-  //     sinon.stub(transporterMock, "sendMail").resolves();
-  //     const response = await EmailServiceObj.sendEmail("test@test.com", "1212");
-  //     console.log(response);
-  //   });
 });
