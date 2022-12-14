@@ -89,4 +89,13 @@ describe("Error handler", () => {
     expect(response.errorMessage).toBe("upgrade to premium");
     expect(response.erroCode).toBe(401);
   });
+  it("should return 400 for bad request", () => {
+    //Arrange
+    const receivedMessage = "bad request";
+    //Act
+    const response = new ErrorHandlerObj(receivedMessage);
+    //Assert
+    expect(response.errorMessage).toBe("bad request");
+    expect(response.erroCode).toBe(400);
+  });
 });

@@ -8,8 +8,10 @@ import {
   PLAN_ALREADY_ACTIVE,
   INVALID_PLAN_MESSAGE,
   UPGREADE_TO_PREMIUM,
+  BAD_REQUEST,
 } from "./customErrorMessage";
 import {
+  BAD_REQUEST_STATUS_CODE,
   INTERNAL_SERVER_ERROR_STATUS_CODE,
   NOT_FOUND_STATUS_CODE,
   OK_STATUS_CODE,
@@ -59,6 +61,10 @@ class ErrorHandler extends Error {
       case UPGREADE_TO_PREMIUM:
         this.erroCode = UNAUTHORIZED_ACCESS_STATUS_CODE;
         this.errorMessage = UPGREADE_TO_PREMIUM;
+        break;
+      case BAD_REQUEST:
+        this.erroCode = BAD_REQUEST_STATUS_CODE;
+        this.errorMessage = BAD_REQUEST;
         break;
       default:
         this.erroCode = INTERNAL_SERVER_ERROR_STATUS_CODE;

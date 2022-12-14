@@ -39,6 +39,7 @@
     "firebase": "9.14.0",
     "ioredis": "5.2.4",
     "jest-html-reporter": "3.7.0",
+    "joi": "^17.7.0",
     "jsonwebtoken": "8.5.1",
     "jwt-decode": "3.1.2",
     "knex": "2.3.0",
