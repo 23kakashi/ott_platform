@@ -16,7 +16,7 @@ class Validations {
       language: joi.string().required(),
       plan: joi.string().required(),
       url: joi.string().required(),
-      actors: joi.array().required(),
+      cast: joi.array().required(),
       directors: joi.array().required(),
       geners: joi.array().required(),
     });

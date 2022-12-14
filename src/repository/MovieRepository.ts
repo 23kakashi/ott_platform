@@ -7,7 +7,8 @@ class MovieRepository {
   }
 
   async storeMovieCast(moviecast: MovieCastType[]) {
-    knex("movie_cast").insert(moviecast);
+    console.log(moviecast);
+    await knex("movie_cast").insert(moviecast);
   }
 
   async storeMovieDirectors(moviedirectors: MovieDirectorType[]) {

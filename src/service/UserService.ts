@@ -41,7 +41,6 @@ class UserService {
       const cast = await MovieRepositoryObj.getMovieCast(movies_id);
       const directors = await MovieRepositoryObj.getMovieDirection(movies_id);
       const geners = await MovieRepositoryObj.getMovieGeners(movies_id);
-
       const movie_cast = cast.map(({ actor }) => actor);
       const movie_directors = directors.map(({ director_name }) => director_name);
       const movie_geners = geners.map(({ genres }) => genres);

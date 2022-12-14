@@ -4,12 +4,13 @@ import { MovieDataType } from "../types/movie.types";
 
 class MovieService {
   async addMovieToDb(
-    { title, rating, language, release_date, plan, url, actors, directors, geners }: MovieDataType,
+    { title, rating, language, release_date, plan, url, cast, directors, geners }: MovieDataType,
     logger: APILogger
   ) {
     const movie_id: string = await MovieRepositoryObj.storeMovie({ title, rating, language, release_date, plan, url });
     logger.info("movie is stored in movies table");
-    const moviecast = actors.map((actor: string) => {
+
+    const moviecast = cast.map((actor: string) => {
       return { movie_id, actor: actor };
     });
     logger.info("movie cast stored");
