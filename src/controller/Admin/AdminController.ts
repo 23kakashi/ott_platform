@@ -26,6 +26,9 @@ class AdminController {
       response.status(OK_STATUS_CODE).json({ message: "movie added" });
     } catch (error) {
       logger.error(String(error));
+      if (error instanceof ErrorHandler) {
+        return response.status(error.erroCode).json({ message: error.errorMessage });
+      }
       return response.status(INTERNAL_SERVER_ERROR_STATUS_CODE).json({ message: INTERNAL_SERVER_ERROR_MESSAGE });
     }
   }

@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is a sample Goodreads Library server where you can browse through your favourite books and rent them. This is an OMOS(Online Managed Offline Service).",
-    "version": "1.0.6",
-    "title": "Swagger Goodreads"
+    "description": "This is a server for an ott platform. Admin can added new content. User can search for content. After login user can watch content based on its plan ",
+    "version": "1.0.0",
+    "title": "OTT Platform"
   },
   "host": "localhost:8080",
   "basePath": "/",

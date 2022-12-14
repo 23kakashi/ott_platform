@@ -35,10 +35,10 @@ describe("add movie POST (admin/addMovie", () => {
   afterEach(() => {
     sinon.restore();
     jest.resetAllMocks();
-    jwtmock.restore();
+    // jwtmock.restore();
   });
 
-  it("should return status 200 if otp is sent to user", async () => {
+  it("should return status 200 if movie is added to db", async () => {
     //Arrange
     const app = new App();
     const addMovieToDbSpy = jest.spyOn(MovieServiceObj, "addMovieToDb").mockResolvedValue("movie added");
@@ -129,5 +129,21 @@ describe("add movie POST (admin/addMovie", () => {
     //Assert
     expect(response.status).toBe(401);
     expect(response.body).toEqual({ message: "Unauthorized access" });
+  });
+
+  it("should throw 400 error code movie data is not of valid format", async () => {
+    //Arrange
+    const app = new App();
+    sinon.stub(MovieServiceObj, "addMovieToDb").throws(new ErrorHandler(INVALID_PLAN_MESSAGE));
+    jwtmock = sinon.stub(jwt, "verify");
+    jwtmock.yields(null, { role: "admin", userid: "test@test.com" });
+    //Act
+    const response = await request(app.connection)
+      .post("/admin/addMovie")
+      .set("Cookie", "authott=lshglhkdfjk")
+      .send({ ...movieData, plan: "" });
+    //Assert
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ message: "bad request" });
   });
 });

@@ -10,15 +10,15 @@ class Validations {
 
   public validateMovieData() {
     const schema = joi.object({
-      title: joi.string().required().length(1),
-      release_date: joi.date().required(),
-      rating: joi.number().required().min(0).max(10),
-      language: joi.string().required().length(1),
-      plan: joi.string().required().length(4),
+      title: joi.string().required(),
+      release_date: joi.string().required(),
+      rating: joi.string().required(),
+      language: joi.string().required(),
+      plan: joi.string().required(),
       url: joi.string().required(),
-      actors: joi.array().required().length(1),
-      directors: joi.array().required().length(1),
-      geners: joi.array().required().length(1),
+      actors: joi.array().required(),
+      directors: joi.array().required(),
+      geners: joi.array().required(),
     });
     return schema;
   }
