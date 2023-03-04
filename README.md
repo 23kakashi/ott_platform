@@ -8,7 +8,7 @@
 <li>Redis</li>
 <li>Knex</li>
 
-<i>API documentation is avaible at http://localhost:8080.api-doc</i>
+<i>API documentation is available at http://localhost:8080.api-doc</i>
 
 <h2>Project Flow</h2>
 
