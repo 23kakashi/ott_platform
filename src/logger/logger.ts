@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 
 // logger for each API
 const logger = bunyan.createLogger({
-  name: "job-portal",
+  name: "ott-portal",
   "request-id": uuid(),
 });
 
